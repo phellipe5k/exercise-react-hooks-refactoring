@@ -1,29 +1,45 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
 import GameCell from './GameCell';
 import './GameBoard.css';
+import TicTacToeContext from './context/TicTacToeContext';
 
-class GameBoard extends React.Component {
-  render() {
-    const { gameState, updateGame } = this.props;
+const GameBoard = () => {
+  const { game, setGame } = useContext(TicTacToeContext);
+  const { gameBoard } = game;
+
+  const toggleActivePlayer = () => {
+    const { activePlayer } = game;
+    if (activePlayer === 1) return 2;
+    return 1;
+  }
+
+  const onClick = (cellClicked) => {
+    const newState = [...game.gameBoard];
+    let newActivePlayer = game.activePlayer;
+
+    if (game.gameBoard[cellClicked] === 0) {
+      newState[cellClicked] = game.activePlayer;
+      newActivePlayer = toggleActivePlayer();
+    } else newState[cellClicked] = game.gameBoard[cellClicked];
+    setGame(
+    { 
+    activePlayer: newActivePlayer,
+    gameBoard: newState, 
+    })
+  }
+
     return (
       <div className="game-board">
-        {gameState.map((playerId, i) => (
+        {gameBoard.map((playerId, i) => (
           <GameCell
             id={i}
             key={i}
-            onClick={() => updateGame(i)}
+            onClick={() => onClick(i)}
             content={playerId}
           />
         ))}
       </div>
     );
-  }
 }
-
-GameBoard.propTypes = {
-  gameState: PropTypes.arrayOf(PropTypes.number).isRequired,
-  updateGame: PropTypes.func.isRequired,
-};
 
 export default GameBoard;

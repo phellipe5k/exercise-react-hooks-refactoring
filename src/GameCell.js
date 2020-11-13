@@ -1,12 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import './GameCell.css';
 import xImage from './x.png';
-import oImage from './o.svg';
+import oImage from './o.png';
 
-class GameCell extends React.Component {
-  render() {
-    const { content, onClick, id } = this.props;
+const GameCell = ({ content, onClick, id }) => {
 
     if (content === 1) {
       return (
@@ -49,16 +46,6 @@ class GameCell extends React.Component {
         onClick={onClick}
       />
     );
-  }
 }
 
-GameCell.propTypes = {
-  content: PropTypes.oneOf([0, 1, 2]),
-  onClick: PropTypes.func.isRequired,
-  id: PropTypes.number.isRequired,
-};
-
-GameCell.defaultProps = {
-  content: 0,
-};
 export default GameCell;
